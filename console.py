@@ -128,17 +128,28 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        params = ' '.join(args[1:])
+        # Create an instance of the specified class
+        new_instance = HBNBCommand.classes[class_name]()
 
-        # Extract key-value pairs from the parameters
-        param_list = [param.split('=') for param in params.split()]
+        # Check if there are parameters provided
+        if len(parts) > 1:
+            # Concatenate the parameters into a single string
+            params_str = ' '.join(parts[1:])
 
-        # Create a dictionary from the parameters
-        param_dict = {key: eval(value) for key, value in param_list}
+            # Convert the parameters string to a dictionary
+            try:
+                params_dict = eval(params_str)
+            except Exception as e:
+                print("** invalid syntax for parameters **")
+                return
 
-        # Create an instance of the specified class with the given parameters
-        new_instance = HBNBCommand.classes[class_name](**param_dict)
-        new_instance.save()
+            # Update the instance attributes with the provided parameters
+            for key, value in params_dict.items():
+                setattr(new_instance, key, value)
+
+        # Save the new instance
+        storage.save()
+
         print(new_instance.id)
 
     def help_create(self):
