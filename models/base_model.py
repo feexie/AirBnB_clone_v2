@@ -3,8 +3,9 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
-from models.engine import db_storage
-from models.engine.db_storage import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 
 class BaseModel:

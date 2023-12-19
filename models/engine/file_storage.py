@@ -11,8 +11,7 @@ from models.place import Place
 from models.review import Review
 from os import getenv
 
-
-class DBStorage:
+class FileStorage:
     """This class manages storage of hbnb models in a database"""
     __engine = None
     __session = None
@@ -31,7 +30,7 @@ class DBStorage:
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
-     def all(self, cls=None):
+    def all(self, cls=None):
         """Query on the current database session"""
         if cls is not None:
             return self.__session.query(cls).all()
@@ -41,20 +40,22 @@ class DBStorage:
             objs.extend(self.__session.query(cls).all())
         return {obj.__class__.__name__ + '.' + obj.id: obj for obj in objs}
 
-
-      def new(self, obj):
+    def new(self, obj):
         """Add the object to the current database session"""
-        self.__session.add(obj)
+        from models.engine.file_storage import FileStorage as FileStorageEngine
+        FileStorageEngine().__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
-        self.__session.commit()
+        from models.engine.file_storage import FileStorage as FileStorageEngine
+        FileStorageEngine().__session.commit()
 
     def delete(self, obj=None):
         """Delete obj from the current database session"""
         if obj is not None:
-            self.__session.delete(obj)
-            self.save()
+            from models.engine.file_storage import FileStorage as FileStorageEngine
+            FileStorageEngine().__session.delete(obj)
+            FileStorageEngine().save()
 
     def reload(self):
         """Create all tables in the database and create the current
