@@ -121,9 +121,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Split the input argument into class name and parameters
-        args = arg.split()
+        args_list = arg.split()
 
-        class_name = args[0]
+        class_name = args_list[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -132,25 +132,25 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
 
         # Check if there are parameters provided
-        if len(parts) > 1:
+        if len(args_list) > 1:
             # Concatenate the parameters into a single string
-            params_str = ' '.join(parts[1:])
+            params_str = ' '.join(args_list[1:])
 
             # Convert the parameters string to a dictionary
             try:
                 params_dict = eval(params_str)
-            except Exception as e:
-                print("** invalid syntax for parameters **")
-                return
+             except Exception as e:
+                 print("** invalid syntax for parameters **")
+                 return
 
-            # Update the instance attributes with the provided parameters
-            for key, value in params_dict.items():
-                setattr(new_instance, key, value)
+         # Update the instance attributes with the provided parameters
+         for key, value in params_dict.items():
+             setattr(new_instance, key, value)
 
-        # Save the new instance
-        storage.save()
+    # Save the new instance
+    storage.save()
 
-        print(new_instance.id)
+    print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
