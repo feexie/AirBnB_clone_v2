@@ -1,18 +1,12 @@
 #!/usr/bin/python3
 """This module defines a class to manage database storage for hbnb clone"""
-from models.engine.db_storage import DBStorage
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+from models.base_model import Base
 from os import getenv
+from models.engine.storage import Storage
 
-class FileStorage:
+class DBStorage(Storage):
     """This class manages storage of hbnb models in a database"""
     __engine = None
     __session = None

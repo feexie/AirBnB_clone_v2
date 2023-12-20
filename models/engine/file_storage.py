@@ -1,18 +1,20 @@
 # file_storage.py
 import json
-from storage import Storage
+from models.base_model import BaseModel
 
-class FileStorage(Storage):
+class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
-
-    def __init__(self, engine_url, file_path=__file_path):
-        super().__init__(engine_url)
-        self.__file_path = file_path
+    __objects = {}
+    __classes = {
+        'BaseModel': 'BaseModel', 'User': 'User', 'Place': 'Place',
+        'State': 'State', 'City': 'City', 'Amenity': 'Amenity',
+        'Review': 'Review'
+    }
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:
+        if cls != None:
             filtered = {k: v for k, v in self.all().items() if isinstance(v, cls)}
             return filtered
 
