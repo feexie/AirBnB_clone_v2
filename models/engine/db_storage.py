@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage database storage for hbnb clone"""
+from models.engine.db_storage import DBStorage
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
@@ -42,20 +43,17 @@ class FileStorage:
 
     def new(self, obj):
         """Add the object to the current database session"""
-        from models.engine.file_storage import FileStorage as FileStorageEngine
-        FileStorageEngine().__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
-        from models.engine.file_storage import FileStorage as FileStorageEngine
-        FileStorageEngine().__session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """Delete obj from the current database session"""
         if obj is not None:
-            from models.engine.file_storage import FileStorage as FileStorageEngine
-            FileStorageEngine().__session.delete(obj)
-            FileStorageEngine().save()
+            self.__session.delete(obj)
+            self.save()
 
     def reload(self):
         """Create all tables in the database and create the current
